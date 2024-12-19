@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Clean up existing directory
+      - name: Clean up existing directory (optional)
         run: |
           if [ -d "my-react-native-app" ]; then
             rm -rf my-react-native-app
@@ -27,6 +27,6 @@ jobs:
 
       - name: Create Expo Project
         run: |
-          npx create-expo-app my-react-native-app --template blank
+          npx create-expo-app my-react-native-app --template blank --force
           cd my-react-native-app
           echo "Project successfully created"
