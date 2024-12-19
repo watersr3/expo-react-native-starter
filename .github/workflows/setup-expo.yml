@@ -43,3 +43,25 @@ jobs:
           git add .
           git commit -m "Initialize Expo React Native Project"
         continue-on-error: true
+      # Step 3: Install dependencies
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
+
+      - name: Install Expo CLI
+        run: npm install -g expo-cli
+
+      # Step 4: Create a new Expo project
+      - name: Create Expo Project
+        run: |
+          npx expo init my-react-native-app --template blank
+          cd my-react-native-app
+          echo "Project successfully created"
+
+      # Step 5: Commit generated project to the repo
+      - name: Commit Expo Project
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add .
+          git commit -m "Initialize Expo React Native Project"
+        continue-on-error: true
