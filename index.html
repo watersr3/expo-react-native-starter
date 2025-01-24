@@ -5,18 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Website</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#ffffff">
+    <link rel="icon" href="icon-192x192.png">
+    <meta name="theme-color" content="#000000">
 </head>
 <body>
     <h1>Welcome to My Website</h1>
     <h1>Welcome THE GREAT</h1>
-    <p>This is a _______________________________.</p>
+    <p>This is a simple HTML page published with Netlify.</p>
 
     <script>
+        // Register the service worker
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
+            navigator.serviceWorker.register('/service-worker.js')
                 .then(registration => {
                     console.log('Service Worker registered with scope:', registration.scope);
+
+                    // Register background sync if supported
+                    if ('SyncManager' in window) {
+                        registration.sync.register('update-cache')
+                            .then(() => {
+                                console.log('Background sync registered for cache updates.');
+                            })
+                            .catch(err => {
+                                console.error('Failed to register background sync:', err);
+                            });
+                    }
                 })
                 .catch(error => {
                     console.error('Service Worker registration failed:', error);
