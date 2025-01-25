@@ -4,14 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Website</title>
+
+    <!-- PWA manifest -->
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="icon-192x192.png">
     <meta name="theme-color" content="#000000">
+
+    <!-- Icons -->
+    <link rel="icon" href="icon-192x192.png" sizes="192x192">
+    <link rel="icon" href="icon-512x512.png" sizes="512x512">
+    <link rel="apple-touch-icon" href="icon-192x192.png">
+    <link rel="apple-touch-icon" href="icon-512x512.png">
+    
+    <!-- Fallback styles for devices that might not support all PWA features -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #000080;
+        }
+        p {
+            color: #333333;
+        }
+    </style>
 </head>
 <body>
+    <!-- Main Content -->
     <h1>Welcome to My Website</h1>
-    <h1>Welcome THE GREAT</h1>
-    <p>This is a simple HTML page published with Netlify.</p>
+    <h2>Welcome THE GREAT</h2>
+    <p>This is a simple HTML page published with Netlify and optimized for PWA.</p>
+
+    <!-- Install Button -->
+    <button id="install-btn" style="display: none;">Install App</button>
 
     <script>
         // Register the service worker
@@ -35,6 +63,38 @@
                     console.error('Service Worker registration failed:', error);
                 });
         }
+
+        // Add BeforeInstallPrompt event listener for PWA install
+        let deferredPrompt;
+        const installBtn = document.getElementById('install-btn');
+
+        window.addEventListener('beforeinstallprompt', event => {
+            // Prevent the mini-infobar from appearing
+            event.preventDefault();
+            deferredPrompt = event;
+            // Show the install button
+            installBtn.style.display = 'block';
+
+            installBtn.addEventListener('click', () => {
+                // Show the install prompt
+                deferredPrompt.prompt();
+                // Wait for the user to respond
+                deferredPrompt.userChoice.then(choiceResult => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    } else {
+                        console.log('User dismissed the install prompt');
+                    }
+                    deferredPrompt = null; // Clear the prompt
+                });
+            });
+        });
+
+        // Log if the app is installed
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA was installed');
+            installBtn.style.display = 'none'; // Hide the install button
+        });
     </script>
 </body>
 </html>
