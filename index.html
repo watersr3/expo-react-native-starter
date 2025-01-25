@@ -3,95 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My PWA</title>
+    <title>My Website</title>
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icon-192x192.png">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#000000">
 </head>
 <body>
-    <h1>Welcome to My w</h1>
-    <p>This is a progressive web app demo.</p>
+    <h1>Welcome to My Website</h1>
+    <h1>Welcome THE GREAT</h1>
+    <p>This is a _______________***********________.</p>
 
     <script>
-        // Service Worker Logic
-        const CACHE_NAME = 'pwa-cache-v1';
-        const urlsToCache = [
-            '/',
-            '/index.html',
-            '/manifest.json',
-            '/icon-192x192.png',
-            '/icon-512x512.png'
-        ];
-
-        // Install and Cache Static Assets
-        self.addEventListener('install', event => {
-            event.waitUntil(
-                caches.open(CACHE_NAME).then(cache => {
-                    console.log('Opened cache');
-                    return cache.addAll(urlsToCache);
-                })
-            );
-            self.skipWaiting(); // Activate worker immediately
-        });
-
-        // Activate and Remove Outdated Caches
-        self.addEventListener('activate', event => {
-            event.waitUntil(
-                caches.keys().then(cacheNames => {
-                    return Promise.all(
-                        cacheNames.map(cache => {
-                            if (cache !== CACHE_NAME) {
-                                console.log('Deleting old cache:', cache);
-                                return caches.delete(cache);
-                            }
-                        })
-                    );
-                })
-            );
-            self.clients.claim(); // Take control of the page immediately
-        });
-
-        // Fetch and Cache Resources Dynamically
-        self.addEventListener('fetch', event => {
-            event.respondWith(
-                caches.match(event.request).then(response => {
-                    return (
-                        response ||
-                        fetch(event.request).then(fetchResponse => {
-                            return caches.open(CACHE_NAME).then(cache => {
-                                cache.put(event.request, fetchResponse.clone());
-                                return fetchResponse;
-                            });
-                        })
-                    );
-                }).catch(() => {
-                    if (event.request.url.endsWith('.html')) {
-                        return caches.match('/index.html');
-                    }
-                })
-            );
-        });
-
-        // Network Reconnection Handling and Cache Update
-        self.addEventListener('sync', event => {
-            if (event.tag === 'update-cache') {
-                event.waitUntil(
-                    caches.open(CACHE_NAME).then(cache => {
-                        return Promise.all(
-                            urlsToCache.map(url => {
-                                return fetch(url).then(response => {
-                                    if (response.ok) {
-                                        return cache.put(url, response);
-                                    }
-                                });
-                            })
-                        );
-                    })
-                );
-            }
-        });
-
-        // Register the Service Worker
+        // Register the service worker
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/service-worker.js')
                 .then(registration => {
