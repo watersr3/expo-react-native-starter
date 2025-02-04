@@ -1,6 +1,6 @@
 {
-    "name": "My Website PWA",
-    "short_name": "PWA",
+    "name": "the great",
+    "short_name": "GREAT",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",
